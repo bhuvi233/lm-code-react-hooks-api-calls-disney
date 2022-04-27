@@ -16,7 +16,7 @@ const Navigation: React.FC<NavigationProps> = ({
     setCurrentPage,
     updateCharacters,
 }) => {
-    const favouriteCharacters = useContext(FavouritesContext);
+    const { favourites } = useContext(FavouritesContext);
 
     const [showAllCharacters, setshowAllCharacters] = useState<boolean>(true);
 
@@ -33,7 +33,7 @@ const Navigation: React.FC<NavigationProps> = ({
     };
 
     const showFavourites = () => {
-        updateCharacters(favouriteCharacters);
+        updateCharacters(favourites);
         setshowAllCharacters(false);
         setCurrentPage(0);
     };

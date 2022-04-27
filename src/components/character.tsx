@@ -5,33 +5,32 @@ import { DisneyCharacter } from "../disney_character";
 // for our props we can reuse the DisneyCharacter interface
 interface CharacterProps {
     character: DisneyCharacter;
-    updateFavourites: (favourites: Array<DisneyCharacter>) => void;
+    //updateFavourites: (favourites: Array<DisneyCharacter>) => void;
 }
 
 // - defining an anonymous type that just has one property - a DisneyCharacter
 const Character: React.FC<CharacterProps> = ({
     character,
-    updateFavourites,
+    //updateFavourites,
 }) => {
-    const characterFavourites = useContext(FavouritesContext);
+    const { favourites, updateFavourites } = useContext(FavouritesContext);
 
     const toggleFavouriteForCharacter = (characterId: number) => {
         if (
-            characterFavourites.filter(
-                (character) => character._id === characterId
-            ).length === 0
+            favourites.filter((character) => character._id === characterId)
+                .length === 0
         ) {
             //add to favourites
-            updateFavourites([...characterFavourites, character]);
+            updateFavourites([...favourites, character]);
         } else {
             //remove from favourites
-            const updatedFavourites = characterFavourites.filter(
+            const updatedFavourites = favourites.filter(
                 (character) => character._id !== characterId
             );
             updateFavourites(updatedFavourites);
         }
     };
-    console.log(characterFavourites.length);
+    console.log(favourites.length);
 
     return (
         <article className="character-item">
@@ -41,7 +40,7 @@ const Character: React.FC<CharacterProps> = ({
                 className="character-item__actions"
                 onClick={() => toggleFavouriteForCharacter(character._id)}
             >
-                {characterFavourites.filter(
+                {favourites.filter(
                     (disCharacter) => disCharacter._id === character._id
                 ).length === 0
                     ? "Add to Favourites"

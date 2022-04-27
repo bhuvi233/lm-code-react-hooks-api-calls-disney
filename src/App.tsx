@@ -6,16 +6,26 @@ import Navigation from "./components/navigation";
 import { DisneyCharacter } from "./disney_character";
 import axios from "axios";
 
-export const FavouritesContext = React.createContext<DisneyCharacter[]>([]);
+export interface IFavourites {
+    favourites: DisneyCharacter[];
+    updateFavourites: (favourites: Array<DisneyCharacter>) => void;
+}
+
+export const FavouritesContext = React.createContext<IFavourites>({
+    favourites: [],
+    updateFavourites() {},
+});
 
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [characterFavourites, setCharacterFavourites] = useState<
-        Array<DisneyCharacter>
-    >([]);
+    const [favourites, setFavourites] = useState<Array<DisneyCharacter>>([]);
 
     // Some dummy state representing disney characters
     const [characters, setCharacters] = useState<Array<DisneyCharacter>>([]);
+
+    const updateFavourites = (characters: DisneyCharacter[]) => {
+        setFavourites(characters);
+    };
 
     const getCharacters = async (pageNumber: number) => {
         const apiResponse = await axios.get(
@@ -30,7 +40,7 @@ const App: React.FC = () => {
     }, [currentPage]);
 
     return (
-        <FavouritesContext.Provider value={characterFavourites}>
+        <FavouritesContext.Provider value={{ favourites, updateFavourites }}>
             <div className="page">
                 <Header currentPage={currentPage} />
                 <Navigation
@@ -40,7 +50,7 @@ const App: React.FC = () => {
                 />
                 <CharacterContainer
                     characters={characters}
-                    updateFavourites={setCharacterFavourites}
+                    /*updateFavourites={setCharacterFavourites}*/
                 />
             </div>
         </FavouritesContext.Provider>
