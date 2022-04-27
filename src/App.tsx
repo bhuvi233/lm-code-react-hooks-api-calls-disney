@@ -6,10 +6,12 @@ import Navigation from "./components/navigation";
 import { DisneyCharacter } from "./disney_character";
 import axios from "axios";
 
+export const FavouritesContext = React.createContext<DisneyCharacter[]>([]);
+
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [characterFavourites, setCharacterFavourites] = useState<
-        Array<number>
+        Array<DisneyCharacter>
     >([]);
 
     // Some dummy state representing disney characters
@@ -23,22 +25,25 @@ const App: React.FC = () => {
     };
 
     useEffect(() => {
+        if (currentPage <= 0) return;
         getCharacters(currentPage);
     }, [currentPage]);
 
     return (
-        <div className="page">
-            <Header currentPage={currentPage} />
-            <Navigation
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
-            <CharacterContainer
-                characters={characters}
-                characterFavourites={characterFavourites}
-                updateFavourites={setCharacterFavourites}
-            />
-        </div>
+        <FavouritesContext.Provider value={characterFavourites}>
+            <div className="page">
+                <Header currentPage={currentPage} />
+                <Navigation
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    updateCharacters={setCharacters}
+                />
+                <CharacterContainer
+                    characters={characters}
+                    updateFavourites={setCharacterFavourites}
+                />
+            </div>
+        </FavouritesContext.Provider>
     );
 };
 
