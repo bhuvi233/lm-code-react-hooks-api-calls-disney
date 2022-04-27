@@ -23,8 +23,8 @@ const App: React.FC = () => {
     // Some dummy state representing disney characters
     const [characters, setCharacters] = useState<Array<DisneyCharacter>>([]);
 
-    const updateFavourites = (characters: DisneyCharacter[]) => {
-        setFavourites(characters);
+    const updateFavourites = (favourites: DisneyCharacter[]) => {
+        setFavourites(favourites);
     };
 
     const getCharacters = async (pageNumber: number) => {
